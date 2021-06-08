@@ -4,7 +4,9 @@
   <version>1.0</version>
   <vendor email="a@a.com" url="http://innopolis.university">PolyStat</vendor>
 
-  <description></description>
+  <description><![CDATA[
+      Plugin that adds language support for EOLANG
+  ]]></description>
 
   <change-notes>
   </change-notes>
@@ -17,7 +19,10 @@
   <depends>com.intellij.modules.platform</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <fileType name="EO File" implementationClass="university.innopolis.eolang.base.EOFileType"
+              fieldName="INSTANCE" language="EOLANG" extensions="eo"/>
+    <lang.parserDefinition language="EOLANG"
+                           implementationClass="university.innopolis.eolang.base.EOParserDefinition"/>
   </extensions>
 
   <actions>
