@@ -23,6 +23,8 @@
               fieldName="INSTANCE" language="EOLANG" extensions="eo"/>
     <lang.parserDefinition language="EOLANG"
                            implementationClass="university.innopolis.eolang.base.EOParserDefinition"/>
+<!--    <lang.syntaxHighlighterFactory language="EOLANG"-->
+<!--                                   implementationClass="university.innopolis.eolang.base.EOSyntaxHighlighterFactory"/>-->
   </extensions>
 
   <actions>
