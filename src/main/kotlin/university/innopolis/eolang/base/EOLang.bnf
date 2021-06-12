@@ -1,0 +1,49 @@
+{
+  parserClass="university.innopolis.eolang.parser.EOParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="EO"
+  psiImplClassSuffix="Impl"
+  psiPackage="university.innopolis.eolang.base.psi"
+  psiImplPackage="university.innopolis.eolang.base.psi.impl"
+
+  elementTypeHolderClass="university.innopolis.eolang.base.psi.EOTypes"
+  elementTypeClass="university.innopolis.eolang.base.psi.EOElementType"
+  tokenTypeClass="university.innopolis.eolang.base.psi.EOTokenType"
+}
+
+program ::= [ license ] [ metas ] { object eol }
+license ::= { comment }
+metas ::= { metaa }
+comment ::= '#' any eol
+metaa ::= '+' name space any eol
+//name ::= /[a-z][ˆ ]*/
+object ::= ( abstraction | application ) details
+details ::= [ tail ] { vtail }
+tail ::= eol indent { object eol } dedent
+vtail ::= eol method [ htail ] [ suffix ] [ tail ]
+abstraction ::= attributes [ suffix [ space '/' name ] ]
+attributes ::= '[' attribute { space attribute } ']'
+attribute ::= '@' | name [ '...' ]
+suffix ::= space '>' space ( '@' | name ) [ '!' ]
+method ::= '.' ( name | '^' )
+application ::= head [ htail ]
+htail ::= application method
+        | '(' application ')'
+        | application ':' name
+        | application suffix
+        | application space application
+head ::= name | data | '@' | '$'
+        | '^' | '*' | name '.'
+data ::= bytes | string | integer
+        | char | float [ exp ] | regex
+bytes ::= byte { '-' byte }
+any ::= {string | integer | char | float | regex | byte | name}
+//byte ::= /[\dA-F][\dA-F]/
+//string ::= /"[ˆ"]*"/
+//integer ::= /[+-]?\d+|0x[a-f\d]+/
+//char ::= /'([ˆ']|\\\d+)'/
+//regex ::= //.+/[a-z]*/
+//float ::= /[+-]?\d+(\.\d+)?/ [ exp ]
+//exp ::= /e(+|-)?\d+/
