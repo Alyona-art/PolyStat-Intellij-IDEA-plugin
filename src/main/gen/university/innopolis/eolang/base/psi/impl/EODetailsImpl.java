@@ -34,9 +34,9 @@ public class EODetailsImpl extends ASTWrapperPsiElement implements EODetails {
   }
 
   @Override
-  @NotNull
+  @Nullable
   public EOVtail getVtail() {
-    return findNotNullChildByClass(EOVtail.class);
+    return findChildByClass(EOVtail.class);
   }
 
 }

@@ -20,22 +20,21 @@ comment ::= '#' any eol
 metaa ::= '+' name space any eol
 //name ::= /[a-z][ˆ ]*/
 object ::= ( abstraction | application ) details
-details ::= [ tail ] { vtail }
+details ::= [ tail ] [{ vtail }]
 tail ::= eol indent { object eol } dedent
 vtail ::= eol method [ htail ] [ suffix ] [ tail ]
 abstraction ::= attributes [ suffix [ space '/' name ] ]
-attributes ::= '[' attribute { space attribute } ']'
+attributes ::= '[' attribute [{ space attribute }] ']'
 attribute ::= '@' | name [ '...' ]
 suffix ::= space '>' space ( '@' | name ) [ '!' ]
 method ::= '.' ( name | '^' )
 application ::= head [ htail ]
-htail ::= application method
-        | '(' application ')'
-        | application ':' name
-        | application suffix
-        | application space application
-head ::= name | data | '@' | '$'
-        | '^' | '*' | name '.'
+htail ::=   space application [method]
+           | space application ':' name
+           | suffix
+           | space application space application
+head ::=  name '.' | name | data | '@' | '$'
+        | '^' | '*' | '(' application ')'
 data ::= bytes | string | integer
         | char | float [ exp ] | regex
 bytes ::= byte { '-' byte }

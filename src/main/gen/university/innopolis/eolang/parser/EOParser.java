@@ -151,7 +151,7 @@ public class EOParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // '[' attribute { space attribute } ']'
+  // '[' attribute [{ space attribute }] ']'
   public static boolean attributes(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "attributes")) return false;
     boolean r;
@@ -164,9 +164,16 @@ public class EOParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // space attribute
+  // [{ space attribute }]
   private static boolean attributes_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "attributes_2")) return false;
+    attributes_2_0(b, l + 1);
+    return true;
+  }
+
+  // space attribute
+  private static boolean attributes_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attributes_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SPACE);
@@ -248,15 +255,14 @@ public class EOParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // [ tail ] { vtail }
+  // [ tail ] [{ vtail }]
   public static boolean details(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "details")) return false;
-    if (!nextTokenIs(b, EOL)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, DETAILS, "<details>");
     r = details_0(b, l + 1);
     r = r && details_1(b, l + 1);
-    exit_section_(b, m, DETAILS, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -267,9 +273,16 @@ public class EOParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // { vtail }
+  // [{ vtail }]
   private static boolean details_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "details_1")) return false;
+    details_1_0(b, l + 1);
+    return true;
+  }
+
+  // { vtail }
+  private static boolean details_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "details_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = vtail(b, l + 1);
@@ -278,26 +291,27 @@ public class EOParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // name | data | '@' | '$'
-  //         | '^' | '*' | name '.'
+  // name '.' | name | data | '@' | '$'
+  //         | '^' | '*' | '(' application ')'
   public static boolean head(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "head")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, HEAD, "<head>");
-    r = consumeToken(b, NAME);
+    r = head_0(b, l + 1);
+    if (!r) r = consumeToken(b, NAME);
     if (!r) r = data(b, l + 1);
     if (!r) r = consumeToken(b, "@");
     if (!r) r = consumeToken(b, "$");
     if (!r) r = consumeToken(b, "^");
     if (!r) r = consumeToken(b, "*");
-    if (!r) r = head_6(b, l + 1);
+    if (!r) r = head_7(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // name '.'
-  private static boolean head_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "head_6")) return false;
+  private static boolean head_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "head_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, NAME);
@@ -306,39 +320,9 @@ public class EOParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  /* ********************************************************** */
-  // application method
-  //         | '(' application ')'
-  //         | application ':' name
-  //         | application suffix
-  //         | application space application
-  public static boolean htail(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "htail")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, HTAIL, "<htail>");
-    r = htail_0(b, l + 1);
-    if (!r) r = htail_1(b, l + 1);
-    if (!r) r = htail_2(b, l + 1);
-    if (!r) r = htail_3(b, l + 1);
-    if (!r) r = htail_4(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // application method
-  private static boolean htail_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "htail_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = application(b, l + 1);
-    r = r && method(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
   // '(' application ')'
-  private static boolean htail_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "htail_1")) return false;
+  private static boolean head_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "head_7")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "(");
@@ -348,35 +332,63 @@ public class EOParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // application ':' name
-  private static boolean htail_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "htail_2")) return false;
+  /* ********************************************************** */
+  // space application [method]
+  //            | space application ':' name
+  //            | suffix
+  //            | space application space application
+  public static boolean htail(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "htail")) return false;
+    if (!nextTokenIs(b, SPACE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = application(b, l + 1);
+    r = htail_0(b, l + 1);
+    if (!r) r = htail_1(b, l + 1);
+    if (!r) r = suffix(b, l + 1);
+    if (!r) r = htail_3(b, l + 1);
+    exit_section_(b, m, HTAIL, r);
+    return r;
+  }
+
+  // space application [method]
+  private static boolean htail_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "htail_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SPACE);
+    r = r && application(b, l + 1);
+    r = r && htail_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [method]
+  private static boolean htail_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "htail_0_2")) return false;
+    method(b, l + 1);
+    return true;
+  }
+
+  // space application ':' name
+  private static boolean htail_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "htail_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SPACE);
+    r = r && application(b, l + 1);
     r = r && consumeToken(b, ":");
     r = r && consumeToken(b, NAME);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // application suffix
+  // space application space application
   private static boolean htail_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "htail_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = application(b, l + 1);
-    r = r && suffix(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // application space application
-  private static boolean htail_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "htail_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = application(b, l + 1);
+    r = consumeToken(b, SPACE);
+    r = r && application(b, l + 1);
     r = r && consumeToken(b, SPACE);
     r = r && application(b, l + 1);
     exit_section_(b, m, null, r);

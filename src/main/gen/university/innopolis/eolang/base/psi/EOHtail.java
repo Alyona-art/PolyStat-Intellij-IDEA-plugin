@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface EOHtail extends PsiElement {
 
-  @NotNull
-  List<EOApplication> getApplicationList();
+  @Nullable
+  EOApplication getApplication();
 
   @Nullable
   EOMethod getMethod();

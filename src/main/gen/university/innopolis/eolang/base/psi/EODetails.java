@@ -10,7 +10,7 @@ public interface EODetails extends PsiElement {
   @Nullable
   EOTail getTail();
 
-  @NotNull
+  @Nullable
   EOVtail getVtail();
 
 }

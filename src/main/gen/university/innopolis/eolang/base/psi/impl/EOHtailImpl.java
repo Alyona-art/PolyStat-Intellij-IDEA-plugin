@@ -28,9 +28,9 @@ public class EOHtailImpl extends ASTWrapperPsiElement implements EOHtail {
   }
 
   @Override
-  @NotNull
-  public List<EOApplication> getApplicationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, EOApplication.class);
+  @Nullable
+  public EOApplication getApplication() {
+    return findChildByClass(EOApplication.class);
   }
 
   @Override
