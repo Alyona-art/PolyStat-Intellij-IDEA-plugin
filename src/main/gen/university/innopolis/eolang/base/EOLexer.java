@@ -631,10 +631,12 @@ public class EOLexer implements FlexLexer {
               if (delta > 0) {
                   spaces += 2;
                   yypushback(yytext().length());
+                  System.out.println("TAB");
                   return TAB;
               } else {
                   spaces -= 2;
                   yypushback(yytext().length());
+                  System.out.println("UNTAB");
                   return UNTAB;
               }
           }

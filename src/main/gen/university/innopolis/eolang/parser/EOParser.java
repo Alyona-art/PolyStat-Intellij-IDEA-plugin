@@ -550,7 +550,7 @@ public class EOParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // anonymous
-  //            | (abstraction | application) [tail] [{method  [htail] [suffix] [tail]}]
+  //            | (abstraction | application) [eol tail] [{method  [htail] [suffix] [tail]}]
   public static boolean object(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object")) return false;
     boolean r;
@@ -561,7 +561,7 @@ public class EOParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (abstraction | application) [tail] [{method  [htail] [suffix] [tail]}]
+  // (abstraction | application) [eol tail] [{method  [htail] [suffix] [tail]}]
   private static boolean object_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_1")) return false;
     boolean r;
@@ -582,11 +582,22 @@ public class EOParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [tail]
+  // [eol tail]
   private static boolean object_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "object_1_1")) return false;
-    tail(b, l + 1);
+    object_1_1_0(b, l + 1);
     return true;
+  }
+
+  // eol tail
+  private static boolean object_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_1_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EOL);
+    r = r && tail(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   // [{method  [htail] [suffix] [tail]}]

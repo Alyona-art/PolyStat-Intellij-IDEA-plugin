@@ -42,8 +42,8 @@ SELF=\$
 PLUS=\+
 MINUS=-
 DOT=\.
-LSQ=\[
-RSQ=]
+LSQ="["
+RSQ="]"
 LB=\(
 RB=\)
 AT=@
@@ -107,10 +107,12 @@ NAME=[a-z][a-z0-9_A-Z\-]*
               if (delta > 0) {
                   spaces += 2;
                   yypushback(yytext().length());
+                  System.out.println("TAB");
                   return TAB;
               } else {
                   spaces -= 2;
                   yypushback(yytext().length());
+                  System.out.println("UNTAB");
                   return UNTAB;
               }
           }
