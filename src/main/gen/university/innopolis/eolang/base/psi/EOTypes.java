@@ -9,37 +9,54 @@ import university.innopolis.eolang.base.psi.impl.*;
 public interface EOTypes {
 
   IElementType ABSTRACTION = new EOElementType("ABSTRACTION");
-  IElementType ANY = new EOElementType("ANY");
+  IElementType ANONYMOUS = new EOElementType("ANONYMOUS");
   IElementType APPLICATION = new EOElementType("APPLICATION");
   IElementType ATTRIBUTE = new EOElementType("ATTRIBUTE");
   IElementType ATTRIBUTES = new EOElementType("ATTRIBUTES");
   IElementType BYTES = new EOElementType("BYTES");
-  IElementType COMMENT = new EOElementType("COMMENT");
   IElementType DATA = new EOElementType("DATA");
-  IElementType DETAILS = new EOElementType("DETAILS");
+  IElementType HAS = new EOElementType("HAS");
   IElementType HEAD = new EOElementType("HEAD");
   IElementType HTAIL = new EOElementType("HTAIL");
+  IElementType LABEL = new EOElementType("LABEL");
   IElementType LICENSE = new EOElementType("LICENSE");
-  IElementType METAA = new EOElementType("METAA");
   IElementType METAS = new EOElementType("METAS");
   IElementType METHOD = new EOElementType("METHOD");
   IElementType OBJECT = new EOElementType("OBJECT");
+  IElementType OBJECTS = new EOElementType("OBJECTS");
   IElementType SUFFIX = new EOElementType("SUFFIX");
   IElementType TAIL = new EOElementType("TAIL");
-  IElementType VTAIL = new EOElementType("VTAIL");
 
+  IElementType ARROW = new EOTokenType("arrow");
+  IElementType AT = new EOTokenType("at");
+  IElementType BOOL = new EOTokenType("bool");
   IElementType BYTE = new EOTokenType("byte");
   IElementType CHAR = new EOTokenType("char");
-  IElementType DEDENT = new EOTokenType("dedent");
+  IElementType COLON = new EOTokenType("colon");
+  IElementType COMMENT = new EOTokenType("comment");
+  IElementType CONST = new EOTokenType("const");
+  IElementType DOT = new EOTokenType("dot");
+  IElementType DOTS = new EOTokenType("dots");
   IElementType EOL = new EOTokenType("eol");
-  IElementType EXP = new EOTokenType("exp");
   IElementType FLOAT = new EOTokenType("float");
-  IElementType INDENT = new EOTokenType("indent");
-  IElementType INTEGER = new EOTokenType("integer");
+  IElementType HEX = new EOTokenType("hex");
+  IElementType INT = new EOTokenType("int");
+  IElementType LB = new EOTokenType("LB");
+  IElementType LSQ = new EOTokenType("LSQ");
+  IElementType METANAME = new EOTokenType("metaname");
+  IElementType MINUS = new EOTokenType("minus");
   IElementType NAME = new EOTokenType("name");
+  IElementType PARENT = new EOTokenType("parent");
+  IElementType PLUS = new EOTokenType("plus");
+  IElementType RB = new EOTokenType("RB");
   IElementType REGEX = new EOTokenType("regex");
-  IElementType SPACE = new EOTokenType("space");
+  IElementType RSQ = new EOTokenType("RSQ");
+  IElementType SELF = new EOTokenType("self");
+  IElementType SLASH = new EOTokenType("slash");
+  IElementType STAR = new EOTokenType("star");
   IElementType STRING = new EOTokenType("string");
+  IElementType TAB = new EOTokenType("TAB");
+  IElementType UNTAB = new EOTokenType("UNTAB");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -47,8 +64,8 @@ public interface EOTypes {
       if (type == ABSTRACTION) {
         return new EOAbstractionImpl(node);
       }
-      else if (type == ANY) {
-        return new EOAnyImpl(node);
+      else if (type == ANONYMOUS) {
+        return new EOAnonymousImpl(node);
       }
       else if (type == APPLICATION) {
         return new EOApplicationImpl(node);
@@ -62,14 +79,11 @@ public interface EOTypes {
       else if (type == BYTES) {
         return new EOBytesImpl(node);
       }
-      else if (type == COMMENT) {
-        return new EOCommentImpl(node);
-      }
       else if (type == DATA) {
         return new EODataImpl(node);
       }
-      else if (type == DETAILS) {
-        return new EODetailsImpl(node);
+      else if (type == HAS) {
+        return new EOHasImpl(node);
       }
       else if (type == HEAD) {
         return new EOHeadImpl(node);
@@ -77,11 +91,11 @@ public interface EOTypes {
       else if (type == HTAIL) {
         return new EOHtailImpl(node);
       }
+      else if (type == LABEL) {
+        return new EOLabelImpl(node);
+      }
       else if (type == LICENSE) {
         return new EOLicenseImpl(node);
-      }
-      else if (type == METAA) {
-        return new EOMetaaImpl(node);
       }
       else if (type == METAS) {
         return new EOMetasImpl(node);
@@ -92,14 +106,14 @@ public interface EOTypes {
       else if (type == OBJECT) {
         return new EOObjectImpl(node);
       }
+      else if (type == OBJECTS) {
+        return new EOObjectsImpl(node);
+      }
       else if (type == SUFFIX) {
         return new EOSuffixImpl(node);
       }
       else if (type == TAIL) {
         return new EOTailImpl(node);
-      }
-      else if (type == VTAIL) {
-        return new EOVtailImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

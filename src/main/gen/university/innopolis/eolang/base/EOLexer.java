@@ -5,7 +5,7 @@ package university.innopolis.eolang.base;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
-import static com.intellij.psi.TokenType.BAD_CHARACTER;
+import java.util.logging.Logger;import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 import static university.innopolis.eolang.base.psi.EOTypes.*;
 
@@ -25,6 +25,7 @@ public class EOLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
+  public static final int TABULATION = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -33,39 +34,32 @@ public class EOLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0, 0
+     0,  0,  1, 1
   };
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [10, 6, 5]
-   * Total runtime size is 3968 bytes
+   * Chosen bits are [8, 6, 7]
+   * Total runtime size is 1040 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[(ZZ_CMAP_Y[(ZZ_CMAP_Z[ch>>11]<<6)|((ch>>5)&0x3f)]<<5)|(ch&0x1f)];
+    return ZZ_CMAP_A[ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>13]|((ch>>7)&0x3f)]|(ch&0x7f)];
   }
 
-  /* The ZZ_CMAP_Z table has 544 entries */
+  /* The ZZ_CMAP_Z table has 136 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\1\1\1\2\1\3\1\4\17\5\1\6\1\7\11\5\1\10\1\11\1\5\1\12\1\13\11\5\1\14\14"+
-    "\5\1\15\2\5\1\16\u01e2\5");
+    "\1\0\207\100");
 
-  /* The ZZ_CMAP_Y table has 960 entries */
+  /* The ZZ_CMAP_Y table has 128 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\1\1\1\2\1\3\1\4\21\5\1\6\34\5\1\7\3\5\1\10\6\5\1\7\14\5\1\11\3\5\1\11"+
-    "\3\5\1\11\3\5\1\11\3\5\1\11\3\5\1\11\3\5\1\11\3\5\1\11\3\5\1\11\3\5\1\11\2"+
-    "\5\1\10\3\5\1\10\2\5\1\7\10\5\1\7\1\5\1\10\72\5\1\7\1\10\11\5\1\11\3\5\1\10"+
-    "\5\5\1\12\5\5\1\10\2\5\1\10\4\5\1\12\36\5\1\13\257\5\1\7\24\5\1\10\1\5\1\7"+
-    "\5\5\2\10\2\5\1\10\14\5\1\10\130\5\1\10\54\5\1\7\35\5\1\11\3\5\1\10\1\5\1"+
-    "\14\4\5\1\10\10\5\1\10\12\5\1\10\3\5\1\10\13\5\1\10\3\5\1\7\2\5\1\10\15\5"+
-    "\1\7\32\5\1\10\60\5\1\7\6\5\1\10\143\5\1\15\1\16\12\5\1\10\65\5");
+    "\1\0\177\200");
 
-  /* The ZZ_CMAP_A table has 480 entries */
+  /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\21\1\1\2\17\1\1\22\0\1\2\1\0\1\5\4\0\1\14\3\0\1\7\1\0\1\7\1\20\1\16"+
-    "\1\11\11\10\7\0\6\4\25\0\1\15\4\0\6\13\21\3\1\12\2\3\12\0\1\17\100\0\1\6\31"+
-    "\0\12\10\46\0\12\10\14\0\12\10\20\0\12\10\6\0\12\10\16\0\2\17\54\0\12\10\16"+
-    "\0\62\10");
+    "\12\0\1\2\2\0\1\1\22\0\1\3\1\7\1\40\1\24\1\13\2\0\1\36\1\20\1\21\1\5\1\14"+
+    "\1\0\1\15\1\6\1\10\1\42\11\41\1\11\3\0\1\12\1\0\1\22\6\25\24\37\1\16\1\0\1"+
+    "\17\1\23\1\45\1\0\1\33\3\44\1\31\1\32\5\4\1\34\5\4\1\27\1\35\1\26\1\30\2\4"+
+    "\1\43\2\4\205\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -73,12 +67,15 @@ public class EOLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\4\3\1\2\5\2\1"+
-    "\1\6\1\7\1\10\1\0\1\5\5\0\1\11\1\5"+
-    "\1\12\1\0\1\13";
+    "\2\0\1\1\2\2\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\22\1\23\1\24\1\1\2\4\2\1"+
+    "\2\25\1\26\1\27\1\30\2\0\1\25\1\31\2\4"+
+    "\2\0\1\32\2\0\1\33\1\34\2\4\1\35\1\0"+
+    "\1\36\1\37\1\40";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[27];
+    int [] result = new int[53];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -103,13 +100,16 @@ public class EOLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\22\0\44\0\22\0\66\0\110\0\132\0\154"+
-    "\0\176\0\220\0\242\0\264\0\22\0\22\0\132\0\132"+
-    "\0\306\0\330\0\352\0\374\0\u010e\0\u0120\0\330\0\352"+
-    "\0\22\0\u0132\0\u0144";
+    "\0\0\0\46\0\114\0\162\0\114\0\230\0\276\0\114"+
+    "\0\344\0\114\0\u010a\0\114\0\114\0\114\0\u0130\0\u0130"+
+    "\0\114\0\114\0\114\0\114\0\114\0\114\0\u0156\0\u017c"+
+    "\0\u01a2\0\u01c8\0\u01ee\0\u0214\0\u023a\0\u0260\0\114\0\u0286"+
+    "\0\230\0\u02ac\0\u02d2\0\u02f8\0\114\0\u031e\0\u0344\0\u036a"+
+    "\0\u0390\0\u0214\0\u03b6\0\u03dc\0\114\0\u0402\0\u0428\0\u044e"+
+    "\0\114\0\u0214\0\u03b6\0\u03dc\0\276";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[27];
+    int [] result = new int[53];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -132,21 +132,35 @@ public class EOLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\1\6\1\7\1\2\1\10"+
-    "\1\11\1\12\2\5\1\13\1\2\1\14\2\2\1\15"+
-    "\23\0\1\3\23\0\1\5\6\0\2\5\12\0\1\16"+
-    "\3\0\2\16\15\0\1\17\1\20\23\0\2\21\14\0"+
-    "\1\16\3\0\2\21\6\0\1\22\5\0\1\16\3\0"+
-    "\2\21\1\23\5\0\1\22\7\0\1\24\5\0\1\24"+
-    "\1\25\4\0\1\26\1\0\15\26\1\0\2\26\10\0"+
-    "\2\21\6\0\1\22\11\0\2\27\20\0\2\30\1\0"+
-    "\1\30\22\0\1\31\15\0\2\32\10\0\1\26\1\0"+
-    "\14\26\1\33\1\0\2\26\10\0\2\32\2\0\1\31"+
-    "\5\0\1\26\1\0\1\26\1\33\6\26\2\33\2\26"+
-    "\1\33\1\0\2\26";
+    "\1\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12"+
+    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
+    "\1\23\1\24\1\25\1\26\1\27\1\30\1\31\3\7"+
+    "\1\32\3\7\1\33\1\3\1\34\1\35\1\36\2\7"+
+    "\1\3\3\37\1\40\42\37\50\0\1\5\43\0\1\41"+
+    "\2\0\43\41\4\0\1\7\10\0\1\7\7\0\11\7"+
+    "\1\0\1\7\1\0\5\7\6\0\1\42\37\0\1\43"+
+    "\2\0\43\43\41\0\2\44\3\0\1\27\2\0\43\27"+
+    "\25\0\1\45\13\0\2\45\7\0\1\7\10\0\1\7"+
+    "\7\0\2\7\1\46\6\7\1\0\1\7\1\0\5\7"+
+    "\4\0\1\7\10\0\1\7\7\0\6\7\1\47\2\7"+
+    "\1\0\1\7\1\0\5\7\4\0\1\50\20\0\11\50"+
+    "\1\0\1\50\1\0\4\50\1\0\40\51\1\52\5\51"+
+    "\6\0\1\53\16\0\1\45\13\0\2\44\11\0\1\53"+
+    "\16\0\1\45\13\0\2\44\1\54\5\0\1\40\50\0"+
+    "\1\55\37\0\1\43\2\0\5\43\1\56\35\43\6\0"+
+    "\1\53\32\0\2\44\7\0\1\7\10\0\1\7\7\0"+
+    "\3\7\1\57\5\7\1\0\1\7\1\0\5\7\4\0"+
+    "\1\7\10\0\1\7\7\0\7\7\1\60\1\7\1\0"+
+    "\1\7\1\0\5\7\36\0\1\61\7\0\40\51\1\62"+
+    "\5\51\41\0\2\63\34\0\3\64\5\0\2\64\1\0"+
+    "\1\64\1\0\1\43\2\0\1\43\1\56\3\43\1\56"+
+    "\15\43\10\56\5\43\2\56\1\43\4\0\1\7\10\0"+
+    "\1\7\7\0\4\7\1\65\4\7\1\0\1\7\1\0"+
+    "\5\7\4\0\1\7\10\0\1\7\7\0\10\7\1\57"+
+    "\1\0\1\7\1\0\5\7";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[342];
+    int [] result = new int[1140];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -184,11 +198,13 @@ public class EOLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\1\1\1\11\10\1\2\11\1\1\1\0"+
-    "\1\1\5\0\2\1\1\11\1\0\1\1";
+    "\2\0\1\11\1\1\1\11\2\1\1\11\1\1\1\11"+
+    "\1\1\3\11\2\1\6\11\10\1\1\11\2\1\2\0"+
+    "\1\1\1\11\2\1\2\0\1\1\2\0\1\11\3\1"+
+    "\1\11\1\0\3\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[27];
+    int [] result = new int[53];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -247,21 +263,8 @@ public class EOLexer implements FlexLexer {
   public EOLexer() {
     this((java.io.Reader)null);
   }
-    private boolean isStart = true;
-    private int indentStep = 2;
-    private int currentWhiteSpaces = 0;
-    private int currentIndent = 0;
-
-    private IElementType checkForIndent(IElementType element) {
-        if (isStart) {
-            isStart = false;
-        }
-        if (currentWhiteSpaces >= currentIndent) return element;
-        currentIndent -= indentStep;
-        yypushback(yylength());
-        System.out.println("DEDENT " + currentIndent);
-        return DEDENT;
-    }
+  private int spaces = 0;
+  private boolean isEol = false;
 
 
   /**
@@ -512,84 +515,179 @@ public class EOLexer implements FlexLexer {
             { return BAD_CHARACTER;
             } 
             // fall through
-          case 12: break;
+          case 33: break;
           case 2: 
-            { if (currentWhiteSpaces >= currentIndent) {
-
-     isStart = true;
-                   currentWhiteSpaces = 0;
-                   return EOL;
- }
-        currentIndent -= indentStep;
-        yypushback(yylength());
-        System.out.println("DEDENT " + currentIndent);
-        return DEDENT;
+            { System.out.println("EOL");
+                  yybegin(TABULATION);
+                  return EOL;
             } 
             // fall through
-          case 13: break;
+          case 34: break;
           case 3: 
-            { if (isStart) {
-                currentWhiteSpaces++;
-                if (currentWhiteSpaces > currentIndent) {
-                    currentIndent = currentWhiteSpaces;
-                    System.out.println(currentWhiteSpaces + " " + currentIndent + " " + indentStep);
-
-                    if (indentStep != 0 && currentIndent % indentStep == 0)
-                        return INDENT;
-                }
-            } else {
-                return SPACE;
-            }
+            { return WHITE_SPACE;
             } 
             // fall through
-          case 14: break;
+          case 35: break;
           case 4: 
-            { IElementType e = checkForIndent(NAME);
-          if (e != null) return e;
+            { return NAME;
             } 
             // fall through
-          case 15: break;
+          case 36: break;
           case 5: 
-            { IElementType e = checkForIndent(INTEGER);
-                if (e != null) return e;
+            { return STAR;
             } 
             // fall through
-          case 16: break;
+          case 37: break;
           case 6: 
-            { 
+            { return DOT;
             } 
             // fall through
-          case 17: break;
+          case 38: break;
           case 7: 
-            { IElementType e = checkForIndent(BYTE);
-                if (e != null) return e;
+            { return CONST;
             } 
             // fall through
-          case 18: break;
+          case 39: break;
           case 8: 
-            { IElementType e = checkForIndent(STRING);
-                if (e != null) return e;
+            { return SLASH;
             } 
             // fall through
-          case 19: break;
+          case 40: break;
           case 9: 
-            { IElementType e = checkForIndent(FLOAT);
-                if (e != null) return e;
+            { return COLON;
             } 
             // fall through
-          case 20: break;
+          case 41: break;
           case 10: 
-            { IElementType e = checkForIndent(CHAR);
-                if (e != null) return e;
+            { return ARROW;
             } 
             // fall through
-          case 21: break;
+          case 42: break;
           case 11: 
-            { IElementType e = checkForIndent(REGEX);
-                if (e != null) return e;
+            { return SELF;
             } 
             // fall through
-          case 22: break;
+          case 43: break;
+          case 12: 
+            { return PLUS;
+            } 
+            // fall through
+          case 44: break;
+          case 13: 
+            { return MINUS;
+            } 
+            // fall through
+          case 45: break;
+          case 14: 
+            { return LSQ;
+            } 
+            // fall through
+          case 46: break;
+          case 15: 
+            { return RSQ;
+            } 
+            // fall through
+          case 47: break;
+          case 16: 
+            { return LB;
+            } 
+            // fall through
+          case 48: break;
+          case 17: 
+            { return RB;
+            } 
+            // fall through
+          case 49: break;
+          case 18: 
+            { return AT;
+            } 
+            // fall through
+          case 50: break;
+          case 19: 
+            { return PARENT;
+            } 
+            // fall through
+          case 51: break;
+          case 20: 
+            { return COMMENT;
+            } 
+            // fall through
+          case 52: break;
+          case 21: 
+            { return INT;
+            } 
+            // fall through
+          case 53: break;
+          case 22: 
+            { yybegin(YYINITIAL);
+            } 
+            // fall through
+          case 54: break;
+          case 23: 
+            { int currentSpaces = yytext().length();
+          currentSpaces = currentSpaces - currentSpaces % 2;
+          int delta = currentSpaces - spaces;
+          if (delta != 0) {
+              if (delta > 0) {
+                  spaces += 2;
+                  yypushback(yytext().length());
+                  return TAB;
+              } else {
+                  spaces -= 2;
+                  yypushback(yytext().length());
+                  return UNTAB;
+              }
+          }
+          yybegin(YYINITIAL);
+          yypushback(yytext().length() - currentSpaces);
+            } 
+            // fall through
+          case 55: break;
+          case 24: 
+            { return METANAME;
+            } 
+            // fall through
+          case 56: break;
+          case 25: 
+            { return BYTE;
+            } 
+            // fall through
+          case 57: break;
+          case 26: 
+            { return STRING;
+            } 
+            // fall through
+          case 58: break;
+          case 27: 
+            { return DOTS;
+            } 
+            // fall through
+          case 59: break;
+          case 28: 
+            { return REGEX;
+            } 
+            // fall through
+          case 60: break;
+          case 29: 
+            { return CHAR;
+            } 
+            // fall through
+          case 61: break;
+          case 30: 
+            { return FLOAT;
+            } 
+            // fall through
+          case 62: break;
+          case 31: 
+            { return HEX;
+            } 
+            // fall through
+          case 63: break;
+          case 32: 
+            { return BOOL;
+            } 
+            // fall through
+          case 64: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }
