@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface EOComment extends PsiElement {
+public interface EOAnonymous extends PsiElement {
 
   @NotNull
-  EOAny getAny();
+  EOAttributes getAttributes();
+
+  @NotNull
+  EOHtail getHtail();
 
 }

@@ -27,10 +27,4 @@ public class EOLicenseImpl extends ASTWrapperPsiElement implements EOLicense {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public EOComment getComment() {
-    return findNotNullChildByClass(EOComment.class);
-  }
-
 }

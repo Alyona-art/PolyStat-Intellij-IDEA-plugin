@@ -11,14 +11,14 @@ import static university.innopolis.eolang.base.psi.EOTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import university.innopolis.eolang.base.psi.*;
 
-public class EOVtailImpl extends ASTWrapperPsiElement implements EOVtail {
+public class EOAnonymousImpl extends ASTWrapperPsiElement implements EOAnonymous {
 
-  public EOVtailImpl(@NotNull ASTNode node) {
+  public EOAnonymousImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull EOVisitor visitor) {
-    visitor.visitVtail(this);
+    visitor.visitAnonymous(this);
   }
 
   @Override
@@ -28,27 +28,15 @@ public class EOVtailImpl extends ASTWrapperPsiElement implements EOVtail {
   }
 
   @Override
-  @Nullable
-  public EOHtail getHtail() {
-    return findChildByClass(EOHtail.class);
+  @NotNull
+  public EOAttributes getAttributes() {
+    return findNotNullChildByClass(EOAttributes.class);
   }
 
   @Override
   @NotNull
-  public EOMethod getMethod() {
-    return findNotNullChildByClass(EOMethod.class);
-  }
-
-  @Override
-  @Nullable
-  public EOSuffix getSuffix() {
-    return findChildByClass(EOSuffix.class);
-  }
-
-  @Override
-  @Nullable
-  public EOTail getTail() {
-    return findChildByClass(EOTail.class);
+  public EOHtail getHtail() {
+    return findNotNullChildByClass(EOHtail.class);
   }
 
 }

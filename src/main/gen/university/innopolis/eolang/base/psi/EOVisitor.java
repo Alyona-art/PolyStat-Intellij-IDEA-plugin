@@ -11,7 +11,7 @@ public class EOVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAny(@NotNull EOAny o) {
+  public void visitAnonymous(@NotNull EOAnonymous o) {
     visitPsiElement(o);
   }
 
@@ -31,15 +31,11 @@ public class EOVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitComment(@NotNull EOComment o) {
-    visitPsiElement(o);
-  }
-
   public void visitData(@NotNull EOData o) {
     visitPsiElement(o);
   }
 
-  public void visitDetails(@NotNull EODetails o) {
+  public void visitHas(@NotNull EOHas o) {
     visitPsiElement(o);
   }
 
@@ -51,11 +47,11 @@ public class EOVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitLicense(@NotNull EOLicense o) {
+  public void visitLabel(@NotNull EOLabel o) {
     visitPsiElement(o);
   }
 
-  public void visitMetaa(@NotNull EOMetaa o) {
+  public void visitLicense(@NotNull EOLicense o) {
     visitPsiElement(o);
   }
 
@@ -71,15 +67,15 @@ public class EOVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitObjects(@NotNull EOObjects o) {
+    visitPsiElement(o);
+  }
+
   public void visitSuffix(@NotNull EOSuffix o) {
     visitPsiElement(o);
   }
 
   public void visitTail(@NotNull EOTail o) {
-    visitPsiElement(o);
-  }
-
-  public void visitVtail(@NotNull EOVtail o) {
     visitPsiElement(o);
   }
 

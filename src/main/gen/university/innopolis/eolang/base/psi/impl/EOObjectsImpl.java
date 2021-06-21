@@ -11,14 +11,14 @@ import static university.innopolis.eolang.base.psi.EOTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import university.innopolis.eolang.base.psi.*;
 
-public class EOMetaaImpl extends ASTWrapperPsiElement implements EOMetaa {
+public class EOObjectsImpl extends ASTWrapperPsiElement implements EOObjects {
 
-  public EOMetaaImpl(@NotNull ASTNode node) {
+  public EOObjectsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull EOVisitor visitor) {
-    visitor.visitMetaa(this);
+    visitor.visitObjects(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class EOMetaaImpl extends ASTWrapperPsiElement implements EOMetaa {
 
   @Override
   @NotNull
-  public EOAny getAny() {
-    return findNotNullChildByClass(EOAny.class);
+  public List<EOObject> getObjectList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, EOObject.class);
   }
 
 }

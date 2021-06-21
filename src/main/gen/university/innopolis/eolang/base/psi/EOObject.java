@@ -11,9 +11,21 @@ public interface EOObject extends PsiElement {
   EOAbstraction getAbstraction();
 
   @Nullable
+  EOAnonymous getAnonymous();
+
+  @Nullable
   EOApplication getApplication();
 
+  @Nullable
+  EOHtail getHtail();
+
+  @Nullable
+  EOMethod getMethod();
+
+  @Nullable
+  EOSuffix getSuffix();
+
   @NotNull
-  EODetails getDetails();
+  List<EOTail> getTailList();
 
 }

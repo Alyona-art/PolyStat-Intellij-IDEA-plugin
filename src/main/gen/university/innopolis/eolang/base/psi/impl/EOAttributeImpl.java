@@ -27,4 +27,10 @@ public class EOAttributeImpl extends ASTWrapperPsiElement implements EOAttribute
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public EOLabel getLabel() {
+    return findNotNullChildByClass(EOLabel.class);
+  }
+
 }

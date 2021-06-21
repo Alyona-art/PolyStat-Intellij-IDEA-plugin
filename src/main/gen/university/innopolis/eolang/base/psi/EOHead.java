@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface EOHead extends PsiElement {
 
   @Nullable
-  EOApplication getApplication();
-
-  @Nullable
   EOData getData();
 
 }

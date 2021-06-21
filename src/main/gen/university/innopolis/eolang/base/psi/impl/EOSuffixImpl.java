@@ -27,4 +27,10 @@ public class EOSuffixImpl extends ASTWrapperPsiElement implements EOSuffix {
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public EOLabel getLabel() {
+    return findNotNullChildByClass(EOLabel.class);
+  }
+
 }

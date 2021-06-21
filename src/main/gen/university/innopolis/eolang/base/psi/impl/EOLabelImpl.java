@@ -11,14 +11,14 @@ import static university.innopolis.eolang.base.psi.EOTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import university.innopolis.eolang.base.psi.*;
 
-public class EOAnyImpl extends ASTWrapperPsiElement implements EOAny {
+public class EOLabelImpl extends ASTWrapperPsiElement implements EOLabel {
 
-  public EOAnyImpl(@NotNull ASTNode node) {
+  public EOLabelImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull EOVisitor visitor) {
-    visitor.visitAny(this);
+    visitor.visitLabel(this);
   }
 
   @Override

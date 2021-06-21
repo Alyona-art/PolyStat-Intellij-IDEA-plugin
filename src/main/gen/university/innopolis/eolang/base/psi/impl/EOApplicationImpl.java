@@ -28,15 +28,39 @@ public class EOApplicationImpl extends ASTWrapperPsiElement implements EOApplica
   }
 
   @Override
-  @NotNull
-  public EOHead getHead() {
-    return findNotNullChildByClass(EOHead.class);
+  @Nullable
+  public EOApplication getApplication() {
+    return findChildByClass(EOApplication.class);
   }
 
   @Override
   @Nullable
-  public EOHtail getHtail() {
-    return findChildByClass(EOHtail.class);
+  public EOHas getHas() {
+    return findChildByClass(EOHas.class);
+  }
+
+  @Override
+  @Nullable
+  public EOHead getHead() {
+    return findChildByClass(EOHead.class);
+  }
+
+  @Override
+  @NotNull
+  public List<EOHtail> getHtailList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, EOHtail.class);
+  }
+
+  @Override
+  @Nullable
+  public EOMethod getMethod() {
+    return findChildByClass(EOMethod.class);
+  }
+
+  @Override
+  @Nullable
+  public EOSuffix getSuffix() {
+    return findChildByClass(EOSuffix.class);
   }
 
 }

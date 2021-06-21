@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface EOMetas extends PsiElement {
 
-  @NotNull
-  EOMetaa getMetaa();
-
 }

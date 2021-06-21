@@ -29,8 +29,26 @@ public class EOHtailImpl extends ASTWrapperPsiElement implements EOHtail {
 
   @Override
   @Nullable
+  public EOAnonymous getAnonymous() {
+    return findChildByClass(EOAnonymous.class);
+  }
+
+  @Override
+  @Nullable
   public EOApplication getApplication() {
     return findChildByClass(EOApplication.class);
+  }
+
+  @Override
+  @Nullable
+  public EOHas getHas() {
+    return findChildByClass(EOHas.class);
+  }
+
+  @Override
+  @Nullable
+  public EOHead getHead() {
+    return findChildByClass(EOHead.class);
   }
 
   @Override

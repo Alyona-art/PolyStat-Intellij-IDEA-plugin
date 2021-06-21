@@ -35,14 +35,38 @@ public class EOObjectImpl extends ASTWrapperPsiElement implements EOObject {
 
   @Override
   @Nullable
+  public EOAnonymous getAnonymous() {
+    return findChildByClass(EOAnonymous.class);
+  }
+
+  @Override
+  @Nullable
   public EOApplication getApplication() {
     return findChildByClass(EOApplication.class);
   }
 
   @Override
+  @Nullable
+  public EOHtail getHtail() {
+    return findChildByClass(EOHtail.class);
+  }
+
+  @Override
+  @Nullable
+  public EOMethod getMethod() {
+    return findChildByClass(EOMethod.class);
+  }
+
+  @Override
+  @Nullable
+  public EOSuffix getSuffix() {
+    return findChildByClass(EOSuffix.class);
+  }
+
+  @Override
   @NotNull
-  public EODetails getDetails() {
-    return findNotNullChildByClass(EODetails.class);
+  public List<EOTail> getTailList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, EOTail.class);
   }
 
 }

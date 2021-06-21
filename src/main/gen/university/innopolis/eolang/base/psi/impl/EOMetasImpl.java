@@ -27,10 +27,4 @@ public class EOMetasImpl extends ASTWrapperPsiElement implements EOMetas {
     else super.accept(visitor);
   }
 
-  @Override
-  @NotNull
-  public EOMetaa getMetaa() {
-    return findNotNullChildByClass(EOMetaa.class);
-  }
-
 }

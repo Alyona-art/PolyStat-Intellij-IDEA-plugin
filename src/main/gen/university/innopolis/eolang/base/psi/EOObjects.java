@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface EOMetaa extends PsiElement {
+public interface EOObjects extends PsiElement {
 
   @NotNull
-  EOAny getAny();
+  List<EOObject> getObjectList();
 
 }

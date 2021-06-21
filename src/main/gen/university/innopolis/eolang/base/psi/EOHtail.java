@@ -8,7 +8,16 @@ import com.intellij.psi.PsiElement;
 public interface EOHtail extends PsiElement {
 
   @Nullable
+  EOAnonymous getAnonymous();
+
+  @Nullable
   EOApplication getApplication();
+
+  @Nullable
+  EOHas getHas();
+
+  @Nullable
+  EOHead getHead();
 
   @Nullable
   EOMethod getMethod();

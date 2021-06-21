@@ -13,36 +13,42 @@
   tokenTypeClass="university.innopolis.eolang.base.psi.EOTokenType"
 }
 
-program ::= [ license ] [ metas ] { object eol }
-license ::= { comment }
-metas ::= { metaa }
-comment ::= '#' any eol
-metaa ::= '+' name space any eol
-//name ::= /[a-z][ˆ ]*/
-object ::= ( abstraction | application ) details
-details ::= [ tail ] [{ vtail }]
-tail ::= eol indent { object eol } dedent
-vtail ::= eol method [ htail ] [ suffix ] [ tail ]
-abstraction ::= attributes [ suffix [ space '/' name ] ]
-attributes ::= '[' attribute [{ space attribute }] ']'
-attribute ::= '@' | name [ '...' ]
-suffix ::= space '>' space ( '@' | name ) [ '!' ]
-method ::= '.' ( name | '^' )
-application ::= head [ htail ]
-htail ::=   space application [method]
-           | space application ':' name
-           | suffix
-           | space application space application
-head ::=  name '.' | name | data | '@' | '$'
-        | '^' | '*' | '(' application ')'
-data ::= bytes | string | integer
-        | char | float [ exp ] | regex
-bytes ::= byte { '-' byte }
-any ::= {string | integer | char | float | regex | byte | name}
-//byte ::= /[\dA-F][\dA-F]/
-//string ::= /"[ˆ"]*"/
-//integer ::= /[+-]?\d+|0x[a-f\d]+/
-//char ::= /'([ˆ']|\\\d+)'/
-//regex ::= //.+/[a-z]*/
-//float ::= /[+-]?\d+(\.\d+)?/ [ exp ]
-//exp ::= /e(+|-)?\d+/
+program ::= [license] [metas] objects
+license ::= [{comment eol}]
+metas ::= [{plus name [metaname] eol}]
+objects ::= [{comment eol}] object [{eol object}]
+object ::= anonymous
+           | (abstraction | application) [tail] [{method  [htail] [suffix] [tail]}]
+anonymous ::= attributes htail
+abstraction ::= [{comment eol}] attributes [suffix [slash name]]
+attributes ::= LSQ [attribute [{attribute}]] RSQ
+attribute ::= label
+label ::=  at|name [dots]
+tail ::=  TAB {object} UNTAB
+suffix ::= arrow label [const]
+method ::= dot(name|parent)
+application ::= head [htail] [method [htail] | has [htail] | suffix [htail]]
+                | LB application RB [htail]
+htail ::= {head
+          |application method
+          |LB application RB
+          |application has
+          |application suffix
+          |anonymous}
+head ::=  at
+           |parent
+           |self
+           |star
+           |name
+           |name dot
+           |data
+has ::= colon name
+data ::= bytes
+           |bool
+           |string
+           |int
+           |float
+           |hex
+           |char
+           |regex
+bytes ::= byte [{minus byte}]

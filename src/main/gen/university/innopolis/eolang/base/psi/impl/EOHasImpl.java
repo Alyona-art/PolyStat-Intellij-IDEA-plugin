@@ -11,32 +11,20 @@ import static university.innopolis.eolang.base.psi.EOTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import university.innopolis.eolang.base.psi.*;
 
-public class EODetailsImpl extends ASTWrapperPsiElement implements EODetails {
+public class EOHasImpl extends ASTWrapperPsiElement implements EOHas {
 
-  public EODetailsImpl(@NotNull ASTNode node) {
+  public EOHasImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull EOVisitor visitor) {
-    visitor.visitDetails(this);
+    visitor.visitHas(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof EOVisitor) accept((EOVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public EOTail getTail() {
-    return findChildByClass(EOTail.class);
-  }
-
-  @Override
-  @Nullable
-  public EOVtail getVtail() {
-    return findChildByClass(EOVtail.class);
   }
 
 }

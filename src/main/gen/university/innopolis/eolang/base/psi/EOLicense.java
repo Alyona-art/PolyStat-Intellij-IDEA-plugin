@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface EOLicense extends PsiElement {
 
-  @NotNull
-  EOComment getComment();
-
 }

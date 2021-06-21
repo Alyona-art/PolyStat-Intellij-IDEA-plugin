@@ -7,10 +7,22 @@ import com.intellij.psi.PsiElement;
 
 public interface EOApplication extends PsiElement {
 
-  @NotNull
-  EOHead getHead();
+  @Nullable
+  EOApplication getApplication();
 
   @Nullable
-  EOHtail getHtail();
+  EOHas getHas();
+
+  @Nullable
+  EOHead getHead();
+
+  @NotNull
+  List<EOHtail> getHtailList();
+
+  @Nullable
+  EOMethod getMethod();
+
+  @Nullable
+  EOSuffix getSuffix();
 
 }

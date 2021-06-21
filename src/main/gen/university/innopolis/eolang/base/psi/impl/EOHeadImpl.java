@@ -29,12 +29,6 @@ public class EOHeadImpl extends ASTWrapperPsiElement implements EOHead {
 
   @Override
   @Nullable
-  public EOApplication getApplication() {
-    return findChildByClass(EOApplication.class);
-  }
-
-  @Override
-  @Nullable
   public EOData getData() {
     return findChildByClass(EOData.class);
   }
